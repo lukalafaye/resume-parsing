@@ -1,0 +1,51 @@
+=== EVALUATION RESULTS ===
+                       precision    recall  f1-score   support
+
+       B-College Name       0.08      0.01      0.01       310
+       I-College Name       0.07      0.08      0.08       639
+       L-College Name       0.17      0.00      0.01       310
+       U-College Name       0.00      0.00      0.00        13
+B-Companies worked at       0.00      0.00      0.00       318
+I-Companies worked at       0.00      0.00      0.00       178
+L-Companies worked at       0.00      0.00      0.00       318
+U-Companies worked at       0.43      0.31      0.36       353
+             B-Degree       1.00      0.01      0.02       226
+             I-Degree       0.04      0.00      0.01       666
+             L-Degree       0.00      0.00      0.00       226
+             U-Degree       0.00      0.00      0.00        68
+        B-Designation       0.00      0.00      0.00       454
+        I-Designation       0.00      0.00      0.00       534
+        L-Designation       0.00      0.00      0.00       454
+        U-Designation       0.00      0.00      0.00        48
+      B-Email Address       0.00      0.00      0.00        73
+      I-Email Address       0.00      0.00      0.00        15
+      L-Email Address       0.00      0.00      0.00        73
+      U-Email Address       1.00      0.25      0.39       179
+    B-Graduation Year       0.00      0.00      0.00        11
+    I-Graduation Year       0.00      0.00      0.00         3
+    L-Graduation Year       0.00      0.00      0.00        11
+    U-Graduation Year       0.00      0.00      0.00       232
+           B-Location       0.55      0.35      0.43       368
+           I-Location       0.00      0.00      0.00        45
+           L-Location       0.53      0.33      0.41       368
+           U-Location       0.00      0.00      0.00        59
+               B-Name       0.00      0.00      0.00       223
+               I-Name       0.00      0.00      0.00        13
+               L-Name       0.00      0.00      0.00       223
+             B-Skills       0.00      0.00      0.00      1197
+             I-Skills       0.00      0.00      0.00      4978
+             L-Skills       0.00      0.00      0.00      1197
+             U-Skills       0.00      0.00      0.00       525
+            B-UNKNOWN       0.00      0.00      0.00         2
+            I-UNKNOWN       0.00      0.00      0.00         6
+            L-UNKNOWN       0.00      0.00      0.00         2
+B-Years of Experience       0.00      0.00      0.00        37
+I-Years of Experience       0.00      0.00      0.00        13
+L-Years of Experience       0.00      0.00      0.00        37
+U-Years of Experience       0.00      0.00      0.00         3
+
+            micro avg       0.29      0.03      0.06     15008
+            macro avg       0.09      0.03      0.04     15008
+         weighted avg       0.07      0.03      0.04     15008
+          samples avg       0.03      0.03      0.03     15008
+

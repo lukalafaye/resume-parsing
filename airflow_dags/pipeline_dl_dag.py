@@ -23,6 +23,7 @@ with DAG(
     catchup=False,
     tags=["dl", "example"]
 ):
+
     # 1) Fetch Data
     fetch_data_task = PythonOperator(
         task_id="fetch_data",
