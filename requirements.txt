@@ -1,0 +1,5 @@
+scikit-learn
+label-studio
+spacy
+mlflow
+apache-airflow
