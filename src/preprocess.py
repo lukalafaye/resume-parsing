@@ -3,6 +3,7 @@ import json
 import string
 import os
 from project_paths import DATA_DIR
+from sklearn.model_selection import train_test_split
 
 def preprocess_data(data):
     """
@@ -108,32 +109,91 @@ def remove_overlapping_entities(data):
 def preprocess_logic(**context):
     """
     Airflow PythonOperator entry point:
-    - Read fetched_data.json
-    - Preprocess
-    - Write preprocessed_data.json
+      • read fetched_data.json
+      • preprocess
+      • split train / test
+      • write preprocessed_train.json , preprocessed_test.json
     """
-    ti = context['ti']
-    fetched_data_path = ti.xcom_pull(key='fetched_data_path', task_ids='fetch_data')
-    preprocessed_path = os.path.join(DATA_DIR, "preprocessed_data.json")
-    os.makedirs(os.path.dirname(preprocessed_path), exist_ok=True)
+    ti = context["ti"]
 
-    with open(fetched_data_path, 'r') as f:
+    # --- 1. read raw data ----------------------------------------------------
+    fetched_data_path = ti.xcom_pull(key="fetched_data_path",
+                                     task_ids="fetch_data")
+    with open(fetched_data_path, "r") as f:
         data = json.load(f)
-    data = preprocess_data(data)
-    with open(preprocessed_path, 'w') as out:
-        json.dump(data, out, indent=2)
-    print(f"[preprocess] Wrote preprocessed data => {preprocessed_path}")
 
-    ti.xcom_push(key='preprocessed_data_path', value=preprocessed_path)
+    # --- 2. clean ------------------------------------------------------------
+    data = preprocess_data(data)
+
+    # --- 3. split ------------------------------------------------------------
+    train, test = train_test_split(
+        data,
+        test_size=0.2,      # 80 % / 20 % by default
+        random_state=42,    # for reproducibility
+        shuffle=True,
+    )
+
+    # --- 4. save -------------------------------------------------------------
+    train_path = os.path.join(DATA_DIR, "preprocessed_train.json")
+    test_path  = os.path.join(DATA_DIR, "preprocessed_test.json")
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    with open(train_path, "w") as f:
+        json.dump(train, f, indent=2)
+    with open(test_path, "w") as f:
+        json.dump(test, f, indent=2)
+
+    print(f"[preprocess] → {train_path}  ({len(train)} samples)")
+    print(f"[preprocess] → {test_path}   ({len(test)} samples)")
+
+    # --- 5. push paths to XCom ----------------------------------------------
+    ti.xcom_push(key="train_data_path", value=train_path)
+    ti.xcom_push(key="test_data_path",  value=test_path)
 
 # --- If run as standalone script ---
-if __name__ == '__main__':
-    # Example usage:
-    input_file = os.path.join(DATA_DIR, "dataturks.json")
-    output_file = os.path.join(DATA_DIR, "preprocessed_data.json")
-    with open(input_file, 'r') as f:
+# --- If run as standalone script -------------------------------------------
+if __name__ == "__main__":
+    """
+    Example:
+        python src/preprocess.py  --input data/dataturks.json  --ratio 0.25
+    """
+    import argparse
+    from sklearn.model_selection import train_test_split
+
+    parser = argparse.ArgumentParser(description="Pre‑process & split dataset")
+    parser.add_argument(
+        "--input",
+        default=os.path.join(DATA_DIR, "dataturks.json"),
+        help="Path to raw DataTurks‑format JSON file",
+    )
+    parser.add_argument(
+        "--ratio",
+        type=float,
+        default=0.20,
+        help="Test split ratio (e.g. 0.2 = 20 %)",
+    )
+    args = parser.parse_args()
+
+    # 1) load
+    with open(args.input, "r") as f:
         dataset = json.load(f)
+
+    # 2) clean
     dataset = preprocess_data(dataset)
-    with open(output_file, 'w') as out:
-        json.dump(dataset, out, indent=2)
-    print(f"[preprocess main] Output => {output_file}")
+
+    # 3) split
+    train_set, test_set = train_test_split(
+        dataset, test_size=args.ratio, random_state=42, shuffle=True
+    )
+
+    # 4) save
+    train_path = os.path.join(DATA_DIR, "preprocessed_train.json")
+    test_path  = os.path.join(DATA_DIR, "preprocessed_test.json")
+
+    with open(train_path, "w") as f:
+        json.dump(train_set, f, indent=2)
+    with open(test_path, "w") as f:
+        json.dump(test_set, f, indent=2)
+
+    print(f"[preprocess main]  → {train_path}  ({len(train_set)} samples)")
+    print(f"[preprocess main]  → {test_path}   ({len(test_set)} samples)")

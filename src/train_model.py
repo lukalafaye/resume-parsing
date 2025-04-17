@@ -55,7 +55,7 @@ def train_model_logic(**context):
     - Saves model to disk
     """
     ti = context['ti']
-    preprocessed_path = ti.xcom_pull(key='preprocessed_data_path', task_ids='preprocess_data')
+    preprocessed_path = ti.xcom_pull(key='train_data_path', task_ids='preprocess_data')
     model_out_dir = os.path.join(MODELS_DIR, "my_spacy_model") 
     os.makedirs(model_out_dir, exist_ok=True)
 
@@ -72,7 +72,7 @@ def train_model_logic(**context):
 # --- If run as standalone script ---
 if __name__ == '__main__':
     # Example usage:
-    in_file = os.path.join(DATA_DIR, "preprocessed_data.json")
+    in_file = os.path.join(DATA_DIR, "preprocessed_train.json")
     out_model_dir = os.path.join(MODELS_DIR, "my_spacy_model") 
     os.makedirs(out_model_dir, exist_ok=True)
 

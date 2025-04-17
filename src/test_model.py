@@ -63,7 +63,7 @@ def test_model_logic(**context):
     """
     ti = context['ti']
     model_dir = ti.xcom_pull(key='model_dir', task_ids='train_model')
-    preprocessed_path = ti.xcom_pull(key='preprocessed_data_path', task_ids='preprocess_data')
+    preprocessed_path = ti.xcom_pull(key='test_data_path', task_ids='preprocess_data')
 
     with open(preprocessed_path, 'r') as f:
         dataset = json.load(f)
