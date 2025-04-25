@@ -1,47 +1,48 @@
 === EVALUATION RESULTS ===
                        precision    recall  f1-score   support
 
-       B-College Name       0.79      0.73      0.76        56
-       I-College Name       0.80      0.60      0.69       141
-       L-College Name       0.78      0.68      0.72        56
+                    -       0.00      0.00      0.00         8
+       B-College Name       0.84      0.56      0.67        73
+       I-College Name       0.70      0.34      0.45       149
+       L-College Name       0.78      0.49      0.61        73
        U-College Name       0.00      0.00      0.00         3
-B-Companies worked at       0.82      0.35      0.49        52
-I-Companies worked at       0.00      0.00      0.00        33
-L-Companies worked at       0.71      0.29      0.41        52
-U-Companies worked at       0.90      0.37      0.53        51
-             B-Degree       0.86      0.67      0.75        48
-             I-Degree       0.94      0.75      0.83       158
-             L-Degree       0.84      0.65      0.73        48
-             U-Degree       0.86      1.00      0.92        12
-        B-Designation       0.93      0.58      0.71        95
-        I-Designation       0.75      0.59      0.66       107
-        L-Designation       0.91      0.55      0.68        95
-        U-Designation       0.00      0.00      0.00        11
-      B-Email Address       0.83      0.83      0.83        12
-      I-Email Address       0.00      0.00      0.00         4
-      L-Email Address       1.00      1.00      1.00        12
-      U-Email Address       0.96      0.68      0.79        40
-    B-Graduation Year       0.00      0.00      0.00         3
-    L-Graduation Year       0.00      0.00      0.00         3
-    U-Graduation Year       0.97      0.53      0.68        53
-           B-Location       0.92      0.68      0.78        71
-           I-Location       0.00      0.00      0.00        16
-           L-Location       0.87      0.63      0.73        71
-           U-Location       0.00      0.00      0.00        11
-               B-Name       1.00      0.89      0.94        47
-               L-Name       0.98      0.87      0.92        47
-             B-Skills       0.78      0.29      0.42       258
-             I-Skills       0.98      0.33      0.49       965
-             L-Skills       0.76      0.25      0.38       258
-             U-Skills       0.72      0.34      0.46       140
-            B-UNKNOWN       0.00      0.00      0.00         1
-            L-UNKNOWN       0.00      0.00      0.00         1
-B-Years of Experience       0.00      0.00      0.00         5
-L-Years of Experience       0.00      0.00      0.00         5
-U-Years of Experience       0.00      0.00      0.00         2
+B-Companies worked at       0.74      0.38      0.50        53
+I-Companies worked at       0.00      0.00      0.00        35
+L-Companies worked at       0.80      0.38      0.51        53
+U-Companies worked at       0.91      0.33      0.48        64
+             B-Degree       0.89      0.58      0.70        53
+             I-Degree       0.92      0.70      0.79       143
+             L-Degree       0.88      0.57      0.69        53
+             U-Degree       0.88      0.41      0.56        17
+        B-Designation       0.91      0.33      0.49        96
+        I-Designation       0.70      0.24      0.36       138
+        L-Designation       0.82      0.28      0.42        96
+        U-Designation       0.00      0.00      0.00        17
+      B-Email Address       0.92      0.80      0.86        15
+      I-Email Address       0.00      0.00      0.00         3
+      L-Email Address       1.00      0.87      0.93        15
+      U-Email Address       0.88      0.72      0.79        40
+    B-Graduation Year       0.00      0.00      0.00         1
+    I-Graduation Year       0.00      0.00      0.00         1
+    L-Graduation Year       0.00      0.00      0.00         1
+    U-Graduation Year       1.00      0.47      0.64        40
+           B-Location       1.00      0.58      0.73        69
+           I-Location       0.00      0.00      0.00         8
+           L-Location       0.93      0.54      0.68        69
+           U-Location       1.00      0.29      0.44        14
+               B-Name       1.00      0.85      0.92        48
+               I-Name       0.00      0.00      0.00         6
+               L-Name       0.93      0.79      0.85        48
+             B-Skills       0.82      0.29      0.43       281
+             I-Skills       0.96      0.34      0.50      1116
+             L-Skills       0.89      0.26      0.40       281
+             U-Skills       0.33      0.01      0.02       101
+B-Years of Experience       0.00      0.00      0.00         7
+I-Years of Experience       0.00      0.00      0.00         1
+L-Years of Experience       0.00      0.00      0.00         7
 
-            micro avg       0.88      0.44      0.58      3043
-            macro avg       0.57      0.40      0.46      3043
-         weighted avg       0.85      0.44      0.56      3043
-          samples avg       0.44      0.44      0.44      3043
+            micro avg       0.73      0.37      0.49      3296
+            macro avg       0.57      0.32      0.40      3296
+         weighted avg       0.85      0.37      0.50      3296
+          samples avg       0.37      0.37      0.37      3296
 

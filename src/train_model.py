@@ -6,37 +6,13 @@ import spacy
 from spacy.training import Example
 from spacy.util import minibatch, compounding
 
-import mlflow
-import mlflow.spacy
-from sklearn.metrics import precision_score, recall_score, f1_score
-
 from project_paths import DATA_DIR
 from project_paths import MODELS_DIR
 
-def evaluate_model(nlp, dataset):
-    """
-    Évalue le modèle spaCy en calculant précision, rappel, F1-score.
-    """
-    y_true = []
-    y_pred = []
-
-    for text, ann in dataset:
-        doc = nlp(text)
-        true_entities = [label for start, end, label in ann["entities"]]
-        predicted_entities = [ent.label_ for ent in doc.ents]
-
-        y_true.extend(true_entities)
-        y_pred.extend(predicted_entities)
-
-    precision = precision_score(y_true, y_pred, average='weighted', zero_division=0)
-    recall = recall_score(y_true, y_pred, average='weighted', zero_division=0)
-    f1 = f1_score(y_true, y_pred, average='weighted', zero_division=0)
-
-    return precision, recall, f1
-
 def train_spacy_ner(dataset, n_iter=15, drop=0.3):
     """
-    Entraîne un modèle spaCy NER à partir d’un dataset formaté.
+    Minimal spaCy training on a blank English pipeline, 
+    using the approach from your final notebook.
     """
     nlp = spacy.blank("en")
     if "ner" not in nlp.pipe_names:
@@ -44,6 +20,7 @@ def train_spacy_ner(dataset, n_iter=15, drop=0.3):
     else:
         ner = nlp.get_pipe("ner")
 
+    # Gather labels
     for text, ann in dataset:
         for start, end, label in ann.get("entities", []):
             ner.add_label(label)
@@ -54,7 +31,7 @@ def train_spacy_ner(dataset, n_iter=15, drop=0.3):
         random.shuffle(dataset)
         losses = {}
         batches = minibatch(dataset, size=compounding(4.0, 32.0, 1.001))
-
+        
         for batch in batches:
             examples = []
             for text, ann in batch:
@@ -72,7 +49,10 @@ def train_spacy_ner(dataset, n_iter=15, drop=0.3):
 
 def train_model_logic(**context):
     """
-    Point d’entrée Airflow pour entraîner et logger un modèle spaCy avec MLflow.
+    Airflow PythonOperator entry point for training.
+    - Reads preprocessed_data.json
+    - Trains the spaCy model
+    - Saves model to disk
     """
     ti = context['ti']
     preprocessed_path = ti.xcom_pull(key='train_data_path', task_ids='preprocess_data')
@@ -82,29 +62,16 @@ def train_model_logic(**context):
     with open(preprocessed_path, 'r') as f:
         dataset = json.load(f)
 
-    n_iter = 10
-    drop = 0.3
+    nlp = train_spacy_ner(dataset, n_iter=10, drop=0.3)
 
-    with mlflow.start_run(run_name="spacy_ner_training"):
-        mlflow.log_param("n_iter", n_iter)
-        mlflow.log_param("drop", drop)
+    nlp.to_disk(model_out_dir)
+    print(f"[train_model] Saved spaCy model => {model_out_dir}")
 
-        nlp = train_spacy_ner(dataset, n_iter=n_iter, drop=drop)
+    ti.xcom_push(key='model_dir', value=model_out_dir)
 
-        mlflow.spacy.log_model(spacy_model=nlp, artifact_path="spacy_model")
-
-        nlp.to_disk(model_out_dir)
-        print(f"[train_model] Saved spaCy model => {model_out_dir}")
-
-        ti.xcom_push(key='model_dir', value=model_out_dir)
-
-        precision, recall, f1 = evaluate_model(nlp, dataset)
-        mlflow.log_metric("precision", precision)
-        mlflow.log_metric("recall", recall)
-        mlflow.log_metric("f1_score", f1)
-
-# --- Exécution standalone ---
+# --- If run as standalone script ---
 if __name__ == '__main__':
+    # Example usage:
     in_file = os.path.join(DATA_DIR, "preprocessed_train.json")
     out_model_dir = os.path.join(MODELS_DIR, "my_spacy_model") 
     os.makedirs(out_model_dir, exist_ok=True)
@@ -112,6 +79,6 @@ if __name__ == '__main__':
     with open(in_file, 'r') as f:
         dataset = json.load(f)
 
-    nlp = train_spacy_ner(dataset, n_iter=2, drop=0.3)
+    nlp = train_spacy_ner(dataset, n_iter=2, drop=0.3)  # fewer iters for quick test
     nlp.to_disk(out_model_dir)
     print(f"[train_model main] Model saved => {out_model_dir}")

@@ -40,7 +40,7 @@ def fetch_data_logic(**context):
     1) Convert Label Studio JSON to DataTurks-like format
     2) Optionally push path to XCom for the next task
     """
-    input_file = os.path.join(DATA_DIR, "dataset.json")
+    input_file = os.path.join(DATA_DIR, "latest.json")
     output_file = os.path.join(DATA_DIR, "dataturks.json")
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
@@ -51,6 +51,6 @@ def fetch_data_logic(**context):
     ti.xcom_push(key='fetched_data_path', value=output_file)
 
 if __name__ == "__main__":
-    input_file = os.path.join(DATA_DIR, "dataset.json")
+    input_file = os.path.join(DATA_DIR, "latest.json")
     output_file = os.path.join(DATA_DIR, "dataturks.json")
     labelstudio_to_dataturks_format(input_file, output_file)
