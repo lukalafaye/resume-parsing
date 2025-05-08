@@ -50,11 +50,11 @@ load_examples = False
 
 Lancer airflow: `airflow standalone` et accéder à http://localhost:8080 pour déclencher manuellement le dag.
 
-### MLflow (todo)
+### MLflow
 
 Lancer MLflow avec `mlflow ui` et consulter http://localhost:5000 pour suivre les runs, paramètres, métriques et modèles.
 
-### Docker (todo)
+### Docker
 
 1. Construire l'image :
    `docker build -t airflow .`
