@@ -1,6 +1,6 @@
 # airflow-dags/pipeline_dag.py
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 import datetime
 
 import os
@@ -27,29 +27,28 @@ with DAG(
     # 1) Fetch Data
     fetch_data_task = PythonOperator(
         task_id="fetch_data",
-        python_callable=fetch_data_logic,
-        provide_context=True
+        python_callable=fetch_data_logic
     )
 
     # 2) Preprocess Data
     preprocess_task = PythonOperator(
         task_id="preprocess_data",
-        python_callable=preprocess_logic,
-        provide_context=True
+        python_callable=preprocess_logic
+        #provide_context=True
     )
 
     # 3) Train Model
     train_model_task = PythonOperator(
         task_id="train_model",
-        python_callable=train_model_logic,
-        provide_context=True
+        python_callable=train_model_logic
+        #provide_context=True
     )
 
     # 4) Test/Evaluate Model
     test_model_task = PythonOperator(
         task_id="test_model",
-        python_callable=test_model_logic,
-        provide_context=True
+        python_callable=test_model_logic
+        #provide_context=True
     )
 
     fetch_data_task >> preprocess_task >> train_model_task >> test_model_task

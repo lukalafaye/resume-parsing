@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/9be99ffa8455420caaf43fb4be1c406e/artifacts
+end_time: 1746733983522
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9be99ffa8455420caaf43fb4be1c406e
+run_name: spacy_ner_manual_run
+run_uuid: 9be99ffa8455420caaf43fb4be1c406e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746733793596
+status: 3
+tags: []
+user_id: robertm

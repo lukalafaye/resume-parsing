@@ -1,0 +1,23 @@
+artifact_path: model
+flavors:
+  spacy:
+    code: null
+    data: model.spacy
+    spacy_version: 3.8.5
+is_signature_from_type_hint: false
+mlflow_version: 2.22.0
+model_size_bytes: 4286593
+model_uuid: b0b0c8d17aad473c8196aeb82f5567ed
+prompts: null
+run_id: 9be99ffa8455420caaf43fb4be1c406e
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "string", "name": "text", "required": true}]'
+  outputs: null
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-08 19:52:48.623511'

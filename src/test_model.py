@@ -1,4 +1,3 @@
-# scripts/test_model.py
 import json
 import spacy
 from spacy.training import offsets_to_biluo_tags
@@ -6,6 +5,8 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report, accuracy_score
 from itertools import chain
 import os
+import mlflow
+import mlflow.spacy
 
 from project_paths import DATA_DIR, RESULTS_DIR, MODELS_DIR
 
@@ -80,8 +81,22 @@ def test_model_logic(**context):
         if entity_acc is not None:
             print(f"Entity-only Accuracy: {entity_acc:.4f}")
 
-    results_path = os.path.join(RESULTS_DIR, "test_results.txt")
+    # Démarrer une session MLflow
+    with mlflow.start_run():
+        # Sauvegarder le modèle
+        mlflow.spacy.log_model(nlp, "model")
 
+        # Log des métriques dans MLflow
+        mlflow.log_metric("overall_accuracy", overall_acc)
+        if entity_acc is not None:
+            mlflow.log_metric("entity_accuracy", entity_acc)
+
+        # Log des résultats détaillés du rapport de classification
+        for line in report.splitlines():
+            mlflow.log_param("classification_report_line", line)
+
+    # Sauvegarder les résultats dans un fichier
+    results_path = os.path.join(RESULTS_DIR, "test_results.txt")
     with open(results_path, 'w') as out:
         out.write("=== EVALUATION RESULTS ===\n")
         if isinstance(report, str):
